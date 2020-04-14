@@ -3,15 +3,12 @@ from tkinter import ttk
 
 
 def num_btn(n):
-    try:
-        value = calc_display.get()
-        if value != "0":
-            value += str(n)
-        else:
-            value = str(n)
-        return calc_display.set(value)
-    except ValueError:
-        pass
+    value = calc_display.get()
+    if value != "0":
+        value += str(n)
+    else:
+        value = str(n)
+    return calc_display.set(value)
 
 
 def zero_btn():
@@ -55,10 +52,7 @@ def nine_btn():
 
 
 def clear_btn():
-    try:
-        calc_display.set(0)
-    except ValueError:
-        pass
+    return calc_display.set(0)
 
 
 def value_updater(fn):
@@ -71,78 +65,46 @@ def value_updater(fn):
 
 @value_updater
 def decimal_btn(value):
-    try:
-        # value = calc_display.get()
-        if value.count(".") == 0:
-            # new_val = value + "."
-            value += "."
-            # calc_display.set(new_val)
-            return value
-        else:
-            return value
-    except ValueError:
-        pass
+    if value.count(".") == 0:
+        value += "."
+    elif value.count(".") == 1 and value.count(" "):
+        value += "."
+    return value
 
 
 @value_updater
 def del_btn(value):
-    try:
-        # value = calc_display.get()
-        if len(value) > 1:
-            # new_val = value[0:-1]
-            return value[0:-1]
-            # calc_display.set(new_val)
+    if len(value) > 1:
+        if value[-1] == " ":
+            return value[0:-3]
         else:
-            return 0
-            # new_val = 0
-            # calc_display.set(0)
-        # calc_display.set(new_val)
-        # return new_val
-    except ValueError:
-        pass
+            return value[0:-1]
+    else:
+        return 0
 
 
 @value_updater
 def neg_btn(value):
-    try:
-        # value = calc_display.get()
-        if value.count(" "):
-            val_list = value.split()
-            num1 = val_list[0]
-            math_symbol = val_list[1]
-            num2 = float(val_list[2]) * -1
-            num2 = str(num2)
-            # new_val = num1 + " " + math_symbol + " " + str(num2)
-            # new_val = f"{num1} {math_symbol} {num2}"
-            return f"{num1} {math_symbol} {num2}"
-            # calc_display.set(new_val)
-            # return new_val
-        elif float(value) != 0:
-            # new_val = float(value) * -1
-            return float(value) * -1
-            # calc_display.set(new_val)
-            # return new_val
-        else:
-            # calc_display.set(0)
-            # new_val = 0
-            return 0
-        # return new_val
-    except ValueError:
-        pass
+    if value.count(" "):
+        val_list = value.split()
+        num1 = val_list[0]
+        math_symbol = val_list[1]
+        num2 = float(val_list[2]) * -1
+        num2 = str(num2)
+        return f"{num1} {math_symbol} {num2}"
+    elif float(value) != 0:
+        return float(value) * -1
+    else:
+        return 0
 
 
 @value_updater
 def reciprocal_btn(value):
     try:
-        # value = float(calc_display.get())
         x = float(value)
         if x != 0:
-            # new_val = 1 / x
-            # calc_display.set(new_val)
-            # return new_val
             return 1 / x
         else:
-            # calc_display.set("UNDEFINED")
             return "UNDEFINED"
     except ValueError:
         return "ERROR"
@@ -151,11 +113,8 @@ def reciprocal_btn(value):
 @value_updater
 def squared_btn(value):
     try:
-        # value = float(calc_display.get())
         x = float(value)
         return x ** 2
-        # new_val = value ** 2
-        # calc_display.set(new_val)
     except ValueError:
         return "ERROR"
 
@@ -163,15 +122,11 @@ def squared_btn(value):
 @value_updater
 def sqrt_btn(value):
     try:
-        # value = float(calc_display.get())
         x = float(value)
         if x > 0:
             return x ** (1/2)
-            # new_val = value ** (1/2)
-            # calc_display.set(new_val)
         else:
             return "ERROR"
-            # calc_display.set("ERROR")
     except ValueError:
         return "ERROR"
 
@@ -179,188 +134,83 @@ def sqrt_btn(value):
 @value_updater
 def percent_btn(value):
     try:
-        # value = float(calc_display.get())
         x = float(value)
         return x / 100
-        # new_val = value / 100
-        # calc_display.set(new_val)
     except ValueError:
         return "ERROR"
 
 
 def addition(num1, num2):
-    try:
-        # value = calc_display.get()
-        # val_list = value.split(" + ")
-        # x = float(val_list[0])
-        # y = float(val_list[1])
-        # new_val = x + y
-        new_val = num1 + num2
-        calc_display.set(new_val)
-    except ArithmeticError:
-        pass
+    new_val = num1 + num2
+    return calc_display.set(new_val)
 
 
 def subtraction(num1, num2):
-    try:
-        # value = calc_display.get()
-        # val_list = value.split(" - ")
-        # x = float(val_list[0])
-        # y = float(val_list[1])
-        # new_val = x - y
-        new_val = num1 - num2
-        calc_display.set(new_val)
-    except ArithmeticError:
-        pass
+    new_val = num1 - num2
+    return calc_display.set(new_val)
 
 
 def multiplication(num1, num2):
-    try:
-        # value = calc_display.get()
-        # val_list = value.split(" x ")
-        # x = float(val_list[0])
-        # y = float(val_list[1])
-        # new_val = x * y
-        new_val = num1 * num2
-        calc_display.set(new_val)
-    except ArithmeticError:
-        pass
+    new_val = num1 * num2
+    return calc_display.set(new_val)
 
 
 def division(num1, num2):
-    try:
-        # value = calc_display.get()
-        # val_list = value.split(" / ")
-        # x = float(val_list[0])
-        # y = float(val_list[1])
-        if num2 != 0:
-            new_val = num1 / num2
-            calc_display.set(new_val)
-        else:
-            calc_display.set("UNDEFINED")
-    except ArithmeticError:
-        pass
+    if num2 != 0:
+        new_val = num1 / num2
+    else:
+        new_val = "UNDEFINED"
+    return calc_display.set(new_val)
 
 
 def exponent(num1, num2):
-    try:
-        # value = calc_display.get()
-        # val_list = value.split(" ^ ")
-        # x = float(val_list[0])
-        # y = float(val_list[1])
-        new_val = num1 ** num2
-        calc_display.set(new_val)
-    except ArithmeticError:
-        pass
+    new_val = num1 ** num2
+    return calc_display.set(new_val)
 
 
 def equation_checker(fn):
     def wrapper(*args, **kwargs):
         value = calc_display.get()
         if value.count(" "):
-            # return equal_btn()
             return split_equation(value)
         else:
-            # return fn(*args, **kwargs)
             return fn(value)
     return wrapper
 
 
 @equation_checker
 def add_btn(value):
-    try:
-        # value = calc_display.get()
-        # if value.count(" "):
-        #     return equal_btn()
-        # else:
-        #     new_val = value + " + "
-        #     calc_display.set(new_val)
-        new_val = value + " + "
-        calc_display.set(new_val)
-    except ArithmeticError:
-        pass
+    new_val = value + " + "
+    return calc_display.set(new_val)
 
 
 @equation_checker
 def sub_btn(value):
-    try:
-        # value = calc_display.get()
-        # if value.count(" "):
-        #     return equal_btn()
-        # else:
-        #     new_val = value + " - "
-        #     calc_display.set(new_val)
-        new_val = value + " - "
-        calc_display.set(new_val)
-    except ArithmeticError:
-        pass
+    new_val = value + " - "
+    return calc_display.set(new_val)
 
 
 @equation_checker
 def mult_btn(value):
-    try:
-        # value = calc_display.get()
-        # if value.count(" "):
-        #     return equal_btn()
-        # else:
-        #     new_val = value + " x "
-        #     calc_display.set(new_val)
-        new_val = value + " x "
-        calc_display.set(new_val)
-    except ArithmeticError:
-        pass
+    new_val = value + " x "
+    return calc_display.set(new_val)
 
 
 @equation_checker
 def div_btn(value):
-    try:
-        # value = calc_display.get()
-        # if value.count(" "):
-        #     return equal_btn()
-        # else:
-        #     new_val = value + " / "
-        #     calc_display.set(new_val)
-        new_val = value + " / "
-        calc_display.set(new_val)
-    except ArithmeticError:
-        pass
+    new_val = value + " / "
+    return calc_display.set(new_val)
 
 
 @equation_checker
 def exp_btn(value):
-    try:
-        # value = calc_display.get()
-        # if value.count(" "):
-        #     return equal_btn()
-        # else:
-        #     new_val = value + " ^ "
-        #     calc_display.set(new_val)
-        new_val = value + " ^ "
-        calc_display.set(new_val)
-    except ArithmeticError:
-        pass
+    new_val = value + " ^ "
+    return calc_display.set(new_val)
 
 
 @equation_checker
 def equal_btn(value):
-    try:
-        pass
-        # return split_equation(value)
-        # value = calc_display.get()
-        # if value.count(" ^ "):
-        #     return exponent()
-        # elif value.count(" x "):
-        #     return multiplication()
-        # elif value.count(" / "):
-        #     return division()
-        # elif value.count(" + "):
-        #     return addition()
-        # elif value.count(" - "):
-        #     return subtraction()
-        # else:
-        #     pass
-    except ValueError:
-        pass
+    return calc_display.set(value)
 
 
 math_operators = {
@@ -373,31 +223,17 @@ math_operators = {
 
 
 def math_selector(num1, math_symbol, num2):
-    for operator in math_operators.keys():
-        if math_symbol == operator:
-            return math_operators[operator](num1, num2)
-        else:
-            pass
+    for key in math_operators.keys():
+        if key == math_symbol:
+            return math_operators[key](num1, num2)
 
 
 def split_equation(value):
-    try:
-        # value = calc_display.get()
-        # if value.count(" "):
-        #     val_list = value.split(" ")
-        #     num1 = float(val_list[0])
-        #     math_symbol = val_list[1]
-        #     num2 = float(val_list[2])
-        #     return math_selector(num1, math_symbol, num2)
-        # else:
-        #     pass
-        val_list = value.split(" ")
-        num1 = float(val_list[0])
-        math_symbol = val_list[1]
-        num2 = float(val_list[2])
-        return math_selector(num1, math_symbol, num2)
-    except ValueError:
-        pass
+    val_list = value.split(" ")
+    num1 = float(val_list[0])
+    math_symbol = val_list[1]
+    num2 = float(val_list[2])
+    return math_selector(num1, math_symbol, num2)
 
 
 root = Tk()
@@ -414,24 +250,23 @@ calc_display.set(0)
 ttk.Label(mainframe, textvariable=calc_display).grid(
     columnspan=5, row=1, sticky=(E))
 
-
 ttk.Button(mainframe, text="%", command=percent_btn).grid(
     column=1, row=2, sticky=(W, E))
-ttk.Button(mainframe, text="^", command=exp_btn).grid(
+ttk.Button(mainframe, text="x^y", command=exp_btn).grid(
     column=2, row=2, sticky=(W, E))
 ttk.Button(mainframe, text="C", command=clear_btn).grid(
     column=3, row=2, sticky=(W, E))
 ttk.Button(mainframe, text="DEL", command=del_btn).grid(
     column=4, row=2, sticky=(W, E))
 
-ttk.Button(mainframe, text="1/x",
-           command=reciprocal_btn).grid(column=1, row=3, sticky=(W, E))
+ttk.Button(mainframe, text="1/x", command=reciprocal_btn).grid(
+    column=1, row=3, sticky=(W, E))
 ttk.Button(mainframe, text="x^2", command=squared_btn).grid(
     column=2, row=3, sticky=(W, E))
-ttk.Button(mainframe, text="x^(1/2)",
-           command=sqrt_btn).grid(column=3, row=3, sticky=(W, E))
-ttk.Button(mainframe, text="/", command=div_btn).grid(column=4,
-                                                      row=3, sticky=(W, E))
+ttk.Button(mainframe, text="x^(1/2)", command=sqrt_btn).grid(
+    column=3, row=3, sticky=(W, E))
+ttk.Button(mainframe, text="/", command=div_btn).grid(
+    column=4, row=3, sticky=(W, E))
 
 ttk.Button(mainframe, text="7", command=seven_btn).grid(
     column=1, row=4, sticky=(W, E))
@@ -448,8 +283,8 @@ ttk.Button(mainframe, text="5", command=five_btn).grid(
     column=2, row=5, sticky=(W, E))
 ttk.Button(mainframe, text="6", command=six_btn).grid(
     column=3, row=5, sticky=(W, E))
-ttk.Button(mainframe, text="-", command=sub_btn).grid(column=4,
-                                                      row=5, sticky=(W, E))
+ttk.Button(mainframe, text="-", command=sub_btn).grid(
+    column=4, row=5, sticky=(W, E))
 
 ttk.Button(mainframe, text="1", command=one_btn).grid(
     column=1, row=6, sticky=(W, E))
@@ -457,11 +292,11 @@ ttk.Button(mainframe, text="2", command=two_btn).grid(
     column=2, row=6, sticky=(W, E))
 ttk.Button(mainframe, text="3", command=three_btn).grid(
     column=3, row=6, sticky=(W, E))
-ttk.Button(mainframe, text="+", command=add_btn).grid(column=4,
-                                                      row=6, sticky=(W, E))
+ttk.Button(mainframe, text="+", command=add_btn).grid(
+    column=4, row=6, sticky=(W, E))
 
-ttk.Button(mainframe, text="(-)",
-           command=neg_btn).grid(column=1, row=7, sticky=(W, E))
+ttk.Button(mainframe, text="(-)", command=neg_btn).grid(
+    column=1, row=7, sticky=(W, E))
 ttk.Button(mainframe, text="0", command=zero_btn).grid(
     column=2, row=7, sticky=(W, E))
 ttk.Button(mainframe, text=".", command=decimal_btn).grid(
@@ -472,155 +307,6 @@ ttk.Button(mainframe, text="=", command=equal_btn).grid(
 for child in mainframe.winfo_children():
     child.grid_configure(padx=1, pady=1)
 
+root.bind('<Return>', equal_btn)
+
 root.mainloop()
-
-"""
-def zero_btn():
-    try:
-        value = str(calc_display.get())
-        if value != "0":
-            new_val = value + "0"
-            calc_display.set(int(new_val))
-        else:
-            calc_display.set(int(0))
-    except ValueError:
-        pass
-
-
-def one_btn():
-    try:
-        value = str(calc_display.get())
-        if value != "0":
-            new_val = value + "1"
-            calc_display.set(int(new_val))
-        else:
-            calc_display.set(int(1))
-    except ValueError:
-        pass
-
-
-def two_btn():
-    try:
-        value = str(calc_display.get())
-        if value != "0":
-            new_val = value + "2"
-            calc_display.set(int(new_val))
-        else:
-            calc_display.set(int(2))
-    except ValueError:
-        pass
-
-
-def three_btn():
-    try:
-        value = str(calc_display.get())
-        if value != "0":
-            new_val = value + "3"
-            calc_display.set(int(new_val))
-        else:
-            calc_display.set(int(3))
-    except ValueError:
-        pass
-
-
-def four_btn():
-    try:
-        value = str(calc_display.get())
-        if value != "0":
-            new_val = value + "4"
-            calc_display.set(int(new_val))
-        else:
-            calc_display.set(int(4))
-    except ValueError:
-        pass
-
-
-def five_btn():
-    try:
-        value = str(calc_display.get())
-        if value != "0":
-            new_val = value + "5"
-            calc_display.set(int(new_val))
-        else:
-            calc_display.set(int(5))
-    except ValueError:
-        pass
-
-
-def six_btn():
-    try:
-        value = str(calc_display.get())
-        if value != "0":
-            new_val = value + "6"
-            calc_display.set(int(new_val))
-        else:
-            calc_display.set(int(6))
-    except ValueError:
-        pass
-
-
-def seven_btn():
-    try:
-        value = str(calc_display.get())
-        if value != "0":
-            new_val = value + "7"
-            calc_display.set(int(new_val))
-        else:
-            calc_display.set(int(7))
-    except ValueError:
-        pass
-
-
-def eight_btn():
-    try:
-        value = str(calc_display.get())
-        if value != "0":
-            new_val = value + "8"
-            calc_display.set(int(new_val))
-        else:
-            calc_display.set(int(8))
-    except ValueError:
-        pass
-
-
-def nine_btn():
-    try:
-        value = calc_display.get()
-        if value != "0":
-            new_val = value + "9"
-            calc_display.set(new_val)
-        else:
-            calc_display.set(9)
-    except ValueError:
-        pass
-"""
-
-"""
-def calculate(*args):
-    try:
-        value = float(feet.get())
-        meters.set((0.3048 * value * 10000.0 + 0.5)/10000.0)
-    except ValueError:
-        pass
-
-
-feet = StringVar()
-meters = StringVar()
-
-feet_entry = ttk.Entry(mainframe, width=7, textvariable=feet)
-feet_entry.grid(column=2, row=1, sticky=(W, E))
-
-ttk.Label(mainframe, textvariable=meters).grid(column=2, row=2, sticky=(W, E))
-ttk.Button(mainframe, text="Calculate", command=calculate).grid(
-    column=3, row=3, sticky=W)
-
-ttk.Label(mainframe, text="feet").grid(column=3, row=1, sticky=W)
-ttk.Label(mainframe, text="is equivalent to").grid(column=1, row=2, sticky=E)
-ttk.Label(mainframe, text="meters").grid(column=3, row=2, sticky=W)
-
-for child in mainframe.winfo_children():
-    child.grid_configure(padx=5, pady=5)
-
-feet_entry.focus()
-root.bind('<Return>', calculate)
-"""
