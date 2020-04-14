@@ -6,10 +6,14 @@ def num_btn(n):
     try:
         value = calc_display.get()
         if value != "0":
-            new_val = value + str(n)
-            calc_display.set(new_val)
+            # new_val = value + str(n)
+            # calc_display.set(new_val)
+            value += str(n)
+            # calc_display.set(value)
         else:
-            calc_display.set(n)
+            value = str(n)
+            # calc_display.set(n)
+        calc_display.set(value)
     except ValueError:
         pass
 
@@ -54,18 +58,6 @@ def nine_btn():
     return num_btn(9)
 
 
-def decimal_btn():
-    try:
-        value = calc_display.get()
-        if value.count(".") == 0:
-            new_val = value + "."
-            calc_display.set(new_val)
-        else:
-            pass
-    except ValueError:
-        pass
-
-
 def clear_btn():
     try:
         calc_display.set(0)
@@ -73,14 +65,43 @@ def clear_btn():
         pass
 
 
-def del_btn():
-    try:
+def value_updater(fn):
+    def wrapper(*args, **kwargs):
         value = calc_display.get()
-        if len(value) > 1:
-            new_val = value[0:-1]
-            calc_display.set(new_val)
+        new_val = fn(value)
+        return calc_display.set(new_val)
+    return wrapper
+
+
+@value_updater
+def decimal_btn(value):
+    try:
+        # value = calc_display.get()
+        if value.count(".") == 0:
+            # new_val = value + "."
+            value += "."
+            # calc_display.set(new_val)
+            return value
         else:
-            calc_display.set(0)
+            return value
+    except ValueError:
+        pass
+
+
+@value_updater
+def del_btn(value):
+    try:
+        # value = calc_display.get()
+        if len(value) > 1:
+            # new_val = value[0:-1]
+            return value[0:-1]
+            # calc_display.set(new_val)
+        else:
+            return 0
+            # new_val = 0
+            # calc_display.set(0)
+        # calc_display.set(new_val)
+        # return new_val
     except ValueError:
         pass
 
@@ -90,11 +111,11 @@ def neg_btn():
         value = calc_display.get()
         if value.count(" "):
             val_list = value.split()
-            x = val_list[0]
-            y = val_list[1]
-            z = float(val_list[2])
-            z *= -1
-            new_val = x + " " + y + " " + str(z)
+            num1 = val_list[0]
+            math_symbol = val_list[1]
+            num2 = float(val_list[2])
+            num2 *= -1
+            new_val = num1 + " " + math_symbol + " " + str(num2)
             calc_display.set(new_val)
         elif float(value) != 0:
             new_val = float(value) * -1
@@ -120,7 +141,7 @@ def reciprocal_btn():
 def squared_btn():
     try:
         value = float(calc_display.get())
-        new_val = value**2
+        new_val = value ** 2
         calc_display.set(new_val)
     except ArithmeticError:
         pass
@@ -130,7 +151,7 @@ def sqrt_btn():
     try:
         value = float(calc_display.get())
         if value > 0:
-            new_val = value**(1/2)
+            new_val = value ** (1/2)
             calc_display.set(new_val)
         else:
             calc_display.set("ERROR")
@@ -141,56 +162,59 @@ def sqrt_btn():
 def percent_btn():
     try:
         value = float(calc_display.get())
-        new_val = value/100
+        new_val = value / 100
         calc_display.set(new_val)
     except ValueError:
         pass
 
 
-def addition():
+def addition(num1, num2):
     try:
-        value = calc_display.get()
-        val_list = value.split(" + ")
-        x = float(val_list[0])
-        y = float(val_list[1])
-        new_val = x + y
+        # value = calc_display.get()
+        # val_list = value.split(" + ")
+        # x = float(val_list[0])
+        # y = float(val_list[1])
+        # new_val = x + y
+        new_val = num1 + num2
         calc_display.set(new_val)
     except ArithmeticError:
         pass
 
 
-def subtraction():
+def subtraction(num1, num2):
     try:
-        value = calc_display.get()
-        val_list = value.split(" - ")
-        x = float(val_list[0])
-        y = float(val_list[1])
-        new_val = x - y
+        # value = calc_display.get()
+        # val_list = value.split(" - ")
+        # x = float(val_list[0])
+        # y = float(val_list[1])
+        # new_val = x - y
+        new_val = num1 - num2
         calc_display.set(new_val)
     except ArithmeticError:
         pass
 
 
-def multiplication():
+def multiplication(num1, num2):
     try:
-        value = calc_display.get()
-        val_list = value.split(" x ")
-        x = float(val_list[0])
-        y = float(val_list[1])
-        new_val = x * y
+        # value = calc_display.get()
+        # val_list = value.split(" x ")
+        # x = float(val_list[0])
+        # y = float(val_list[1])
+        # new_val = x * y
+        new_val = num1 * num2
         calc_display.set(new_val)
     except ArithmeticError:
         pass
 
 
-def division():
+def division(num1, num2):
     try:
-        value = calc_display.get()
-        val_list = value.split(" / ")
-        x = float(val_list[0])
-        y = float(val_list[1])
-        if y != 0:
-            new_val = x / y
+        # value = calc_display.get()
+        # val_list = value.split(" / ")
+        # x = float(val_list[0])
+        # y = float(val_list[1])
+        if num2 != 0:
+            new_val = num1 / num2
             calc_display.set(new_val)
         else:
             calc_display.set("UNDEFINED")
@@ -198,93 +222,160 @@ def division():
         pass
 
 
-def exponent():
+def exponent(num1, num2):
     try:
-        value = calc_display.get()
-        val_list = value.split(" ^ ")
-        x = float(val_list[0])
-        y = float(val_list[1])
-        new_val = x**y
+        # value = calc_display.get()
+        # val_list = value.split(" ^ ")
+        # x = float(val_list[0])
+        # y = float(val_list[1])
+        new_val = num1 ** num2
         calc_display.set(new_val)
     except ArithmeticError:
         pass
 
 
-def add_btn():
-    try:
+def equation_checker(fn):
+    def wrapper(*args, **kwargs):
         value = calc_display.get()
         if value.count(" "):
-            return equal_btn()
+            # return equal_btn()
+            return split_equation(value)
         else:
-            new_val = value + " + "
-            calc_display.set(new_val)
+            # return fn(*args, **kwargs)
+            return fn(value)
+    return wrapper
+
+
+@equation_checker
+def add_btn(value):
+    try:
+        # value = calc_display.get()
+        # if value.count(" "):
+        #     return equal_btn()
+        # else:
+        #     new_val = value + " + "
+        #     calc_display.set(new_val)
+        new_val = value + " + "
+        calc_display.set(new_val)
     except ArithmeticError:
         pass
 
 
-def sub_btn():
+@equation_checker
+def sub_btn(value):
     try:
-        value = calc_display.get()
-        if value.count(" "):
-            return equal_btn()
-        else:
-            new_val = value + " - "
-            calc_display.set(new_val)
+        # value = calc_display.get()
+        # if value.count(" "):
+        #     return equal_btn()
+        # else:
+        #     new_val = value + " - "
+        #     calc_display.set(new_val)
+        new_val = value + " - "
+        calc_display.set(new_val)
     except ArithmeticError:
         pass
 
 
-def mult_btn():
+@equation_checker
+def mult_btn(value):
     try:
-        value = calc_display.get()
-        if value.count(" "):
-            return equal_btn()
-        else:
-            new_val = value + " x "
-            calc_display.set(new_val)
+        # value = calc_display.get()
+        # if value.count(" "):
+        #     return equal_btn()
+        # else:
+        #     new_val = value + " x "
+        #     calc_display.set(new_val)
+        new_val = value + " x "
+        calc_display.set(new_val)
     except ArithmeticError:
         pass
 
 
-def div_btn():
+@equation_checker
+def div_btn(value):
     try:
-        value = calc_display.get()
-        if value.count(" "):
-            return equal_btn()
-        else:
-            new_val = value + " / "
-            calc_display.set(new_val)
+        # value = calc_display.get()
+        # if value.count(" "):
+        #     return equal_btn()
+        # else:
+        #     new_val = value + " / "
+        #     calc_display.set(new_val)
+        new_val = value + " / "
+        calc_display.set(new_val)
     except ArithmeticError:
         pass
 
 
-def exp_btn():
+@equation_checker
+def exp_btn(value):
     try:
-        value = calc_display.get()
-        if value.count(" "):
-            return equal_btn()
-        else:
-            new_val = value + " ^ "
-            calc_display.set(new_val)
+        # value = calc_display.get()
+        # if value.count(" "):
+        #     return equal_btn()
+        # else:
+        #     new_val = value + " ^ "
+        #     calc_display.set(new_val)
+        new_val = value + " ^ "
+        calc_display.set(new_val)
     except ArithmeticError:
         pass
 
 
-def equal_btn():
+@equation_checker
+def equal_btn(value):
     try:
-        value = calc_display.get()
-        if value.count(" ^ "):
-            return exponent()
-        elif value.count(" x "):
-            return multiplication()
-        elif value.count(" / "):
-            return division()
-        elif value.count(" + "):
-            return addition()
-        elif value.count(" - "):
-            return subtraction()
+        pass
+        # return split_equation(value)
+        # value = calc_display.get()
+        # if value.count(" ^ "):
+        #     return exponent()
+        # elif value.count(" x "):
+        #     return multiplication()
+        # elif value.count(" / "):
+        #     return division()
+        # elif value.count(" + "):
+        #     return addition()
+        # elif value.count(" - "):
+        #     return subtraction()
+        # else:
+        #     pass
+    except ValueError:
+        pass
+
+
+math_operators = {
+    "^": exponent,
+    "x": multiplication,
+    "/": division,
+    "+": addition,
+    "-": subtraction
+}
+
+
+def math_selector(num1, math_symbol, num2):
+    for operator in math_operators.keys():
+        if math_symbol == operator:
+            return math_operators[operator](num1, num2)
         else:
             pass
+
+
+def split_equation(value):
+    try:
+        # value = calc_display.get()
+        # if value.count(" "):
+        #     val_list = value.split(" ")
+        #     num1 = float(val_list[0])
+        #     math_symbol = val_list[1]
+        #     num2 = float(val_list[2])
+        #     return math_selector(num1, math_symbol, num2)
+        # else:
+        #     pass
+        val_list = value.split(" ")
+        num1 = float(val_list[0])
+        math_symbol = val_list[1]
+        num2 = float(val_list[2])
+        return math_selector(num1, math_symbol, num2)
     except ValueError:
         pass
 
