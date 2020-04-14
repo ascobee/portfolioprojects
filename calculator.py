@@ -87,12 +87,204 @@ def del_btn():
 
 def neg_btn():
     try:
-        value = int(calc_display.get())
-        if value != 0:
-            new_val = value * -1
+        value = calc_display.get()
+        if value.count(" "):
+            val_list = value.split()
+            x = val_list[0]
+            y = val_list[1]
+            z = float(val_list[2])
+            z *= -1
+            new_val = x + " " + y + " " + str(z)
+            calc_display.set(new_val)
+        elif float(value) != 0:
+            new_val = float(value) * -1
             calc_display.set(new_val)
         else:
             calc_display.set(0)
+    except ValueError:
+        pass
+
+
+def reciprocal_btn():
+    try:
+        value = float(calc_display.get())
+        if value != 0:
+            new_val = 1 / value
+            calc_display.set(new_val)
+        else:
+            calc_display.set("UNDEFINED")
+    except FloatingPointError:
+        pass
+
+
+def squared_btn():
+    try:
+        value = float(calc_display.get())
+        new_val = value**2
+        calc_display.set(new_val)
+    except ArithmeticError:
+        pass
+
+
+def sqrt_btn():
+    try:
+        value = float(calc_display.get())
+        if value > 0:
+            new_val = value**(1/2)
+            calc_display.set(new_val)
+        else:
+            calc_display.set("ERROR")
+    except ArithmeticError:
+        pass
+
+
+def percent_btn():
+    try:
+        value = float(calc_display.get())
+        new_val = value/100
+        calc_display.set(new_val)
+    except ValueError:
+        pass
+
+
+def addition():
+    try:
+        value = calc_display.get()
+        val_list = value.split(" + ")
+        x = float(val_list[0])
+        y = float(val_list[1])
+        new_val = x + y
+        calc_display.set(new_val)
+    except ArithmeticError:
+        pass
+
+
+def subtraction():
+    try:
+        value = calc_display.get()
+        val_list = value.split(" - ")
+        x = float(val_list[0])
+        y = float(val_list[1])
+        new_val = x - y
+        calc_display.set(new_val)
+    except ArithmeticError:
+        pass
+
+
+def multiplication():
+    try:
+        value = calc_display.get()
+        val_list = value.split(" x ")
+        x = float(val_list[0])
+        y = float(val_list[1])
+        new_val = x * y
+        calc_display.set(new_val)
+    except ArithmeticError:
+        pass
+
+
+def division():
+    try:
+        value = calc_display.get()
+        val_list = value.split(" / ")
+        x = float(val_list[0])
+        y = float(val_list[1])
+        if y != 0:
+            new_val = x / y
+            calc_display.set(new_val)
+        else:
+            calc_display.set("UNDEFINED")
+    except ArithmeticError:
+        pass
+
+
+def exponent():
+    try:
+        value = calc_display.get()
+        val_list = value.split(" ^ ")
+        x = float(val_list[0])
+        y = float(val_list[1])
+        new_val = x**y
+        calc_display.set(new_val)
+    except ArithmeticError:
+        pass
+
+
+def add_btn():
+    try:
+        value = calc_display.get()
+        if value.count(" "):
+            return equal_btn()
+        else:
+            new_val = value + " + "
+            calc_display.set(new_val)
+    except ArithmeticError:
+        pass
+
+
+def sub_btn():
+    try:
+        value = calc_display.get()
+        if value.count(" "):
+            return equal_btn()
+        else:
+            new_val = value + " - "
+            calc_display.set(new_val)
+    except ArithmeticError:
+        pass
+
+
+def mult_btn():
+    try:
+        value = calc_display.get()
+        if value.count(" "):
+            return equal_btn()
+        else:
+            new_val = value + " x "
+            calc_display.set(new_val)
+    except ArithmeticError:
+        pass
+
+
+def div_btn():
+    try:
+        value = calc_display.get()
+        if value.count(" "):
+            return equal_btn()
+        else:
+            new_val = value + " / "
+            calc_display.set(new_val)
+    except ArithmeticError:
+        pass
+
+
+def exp_btn():
+    try:
+        value = calc_display.get()
+        if value.count(" "):
+            return equal_btn()
+        else:
+            new_val = value + " ^ "
+            calc_display.set(new_val)
+    except ArithmeticError:
+        pass
+
+
+def equal_btn():
+    try:
+        value = calc_display.get()
+        if value.count(" ^ "):
+            return exponent()
+        elif value.count(" x "):
+            return multiplication()
+        elif value.count(" / "):
+            return division()
+        elif value.count(" + "):
+            return addition()
+        elif value.count(" - "):
+            return subtraction()
+        else:
+            pass
     except ValueError:
         pass
 
@@ -112,18 +304,23 @@ ttk.Label(mainframe, textvariable=calc_display).grid(
     columnspan=5, row=1, sticky=(E))
 
 
-ttk.Button(mainframe, text="%").grid(column=1, row=2, sticky=(W, E))
-ttk.Button(mainframe, text="^").grid(column=2, row=2, sticky=(W, E))
+ttk.Button(mainframe, text="%", command=percent_btn).grid(
+    column=1, row=2, sticky=(W, E))
+ttk.Button(mainframe, text="^", command=exp_btn).grid(
+    column=2, row=2, sticky=(W, E))
 ttk.Button(mainframe, text="C", command=clear_btn).grid(
     column=3, row=2, sticky=(W, E))
 ttk.Button(mainframe, text="DEL", command=del_btn).grid(
     column=4, row=2, sticky=(W, E))
 
-ttk.Button(mainframe, text="1/x").grid(column=1, row=3, sticky=(W, E))
-ttk.Button(mainframe, text="x^2").grid(column=2, row=3, sticky=(W, E))
-ttk.Button(mainframe, text="x^(1/2)").grid(column=3,
-                                           row=3, sticky=(W, E))
-ttk.Button(mainframe, text="/").grid(column=4, row=3, sticky=(W, E))
+ttk.Button(mainframe, text="1/x",
+           command=reciprocal_btn).grid(column=1, row=3, sticky=(W, E))
+ttk.Button(mainframe, text="x^2", command=squared_btn).grid(
+    column=2, row=3, sticky=(W, E))
+ttk.Button(mainframe, text="x^(1/2)",
+           command=sqrt_btn).grid(column=3, row=3, sticky=(W, E))
+ttk.Button(mainframe, text="/", command=div_btn).grid(column=4,
+                                                      row=3, sticky=(W, E))
 
 ttk.Button(mainframe, text="7", command=seven_btn).grid(
     column=1, row=4, sticky=(W, E))
@@ -131,7 +328,8 @@ ttk.Button(mainframe, text="8", command=eight_btn).grid(
     column=2, row=4, sticky=(W, E))
 ttk.Button(mainframe, text="9", command=nine_btn).grid(
     column=3, row=4, sticky=(W, E))
-ttk.Button(mainframe, text="x").grid(column=4, row=4, sticky=(W, E))
+ttk.Button(mainframe, text="x", command=mult_btn).grid(
+    column=4, row=4, sticky=(W, E))
 
 ttk.Button(mainframe, text="4", command=four_btn).grid(
     column=1, row=5, sticky=(W, E))
@@ -139,7 +337,8 @@ ttk.Button(mainframe, text="5", command=five_btn).grid(
     column=2, row=5, sticky=(W, E))
 ttk.Button(mainframe, text="6", command=six_btn).grid(
     column=3, row=5, sticky=(W, E))
-ttk.Button(mainframe, text="-").grid(column=4, row=5, sticky=(W, E))
+ttk.Button(mainframe, text="-", command=sub_btn).grid(column=4,
+                                                      row=5, sticky=(W, E))
 
 ttk.Button(mainframe, text="1", command=one_btn).grid(
     column=1, row=6, sticky=(W, E))
@@ -147,7 +346,8 @@ ttk.Button(mainframe, text="2", command=two_btn).grid(
     column=2, row=6, sticky=(W, E))
 ttk.Button(mainframe, text="3", command=three_btn).grid(
     column=3, row=6, sticky=(W, E))
-ttk.Button(mainframe, text="+").grid(column=4, row=6, sticky=(W, E))
+ttk.Button(mainframe, text="+", command=add_btn).grid(column=4,
+                                                      row=6, sticky=(W, E))
 
 ttk.Button(mainframe, text="(-)",
            command=neg_btn).grid(column=1, row=7, sticky=(W, E))
@@ -155,7 +355,8 @@ ttk.Button(mainframe, text="0", command=zero_btn).grid(
     column=2, row=7, sticky=(W, E))
 ttk.Button(mainframe, text=".", command=decimal_btn).grid(
     column=3, row=7, sticky=(W, E))
-ttk.Button(mainframe, text="=").grid(column=4, row=7, sticky=(W, E))
+ttk.Button(mainframe, text="=", command=equal_btn).grid(
+    column=4, row=7, sticky=(W, E))
 
 for child in mainframe.winfo_children():
     child.grid_configure(padx=1, pady=1)
