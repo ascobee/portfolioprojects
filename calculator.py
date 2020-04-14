@@ -6,14 +6,10 @@ def num_btn(n):
     try:
         value = calc_display.get()
         if value != "0":
-            # new_val = value + str(n)
-            # calc_display.set(new_val)
             value += str(n)
-            # calc_display.set(value)
         else:
             value = str(n)
-            # calc_display.set(n)
-        calc_display.set(value)
+        return calc_display.set(value)
     except ValueError:
         pass
 
@@ -106,66 +102,90 @@ def del_btn(value):
         pass
 
 
-def neg_btn():
+@value_updater
+def neg_btn(value):
     try:
-        value = calc_display.get()
+        # value = calc_display.get()
         if value.count(" "):
             val_list = value.split()
             num1 = val_list[0]
             math_symbol = val_list[1]
-            num2 = float(val_list[2])
-            num2 *= -1
-            new_val = num1 + " " + math_symbol + " " + str(num2)
-            calc_display.set(new_val)
+            num2 = float(val_list[2]) * -1
+            num2 = str(num2)
+            # new_val = num1 + " " + math_symbol + " " + str(num2)
+            # new_val = f"{num1} {math_symbol} {num2}"
+            return f"{num1} {math_symbol} {num2}"
+            # calc_display.set(new_val)
+            # return new_val
         elif float(value) != 0:
-            new_val = float(value) * -1
-            calc_display.set(new_val)
+            # new_val = float(value) * -1
+            return float(value) * -1
+            # calc_display.set(new_val)
+            # return new_val
         else:
-            calc_display.set(0)
+            # calc_display.set(0)
+            # new_val = 0
+            return 0
+        # return new_val
     except ValueError:
         pass
 
 
-def reciprocal_btn():
+@value_updater
+def reciprocal_btn(value):
     try:
-        value = float(calc_display.get())
-        if value != 0:
-            new_val = 1 / value
-            calc_display.set(new_val)
+        # value = float(calc_display.get())
+        x = float(value)
+        if x != 0:
+            # new_val = 1 / x
+            # calc_display.set(new_val)
+            # return new_val
+            return 1 / x
         else:
-            calc_display.set("UNDEFINED")
-    except FloatingPointError:
-        pass
-
-
-def squared_btn():
-    try:
-        value = float(calc_display.get())
-        new_val = value ** 2
-        calc_display.set(new_val)
-    except ArithmeticError:
-        pass
-
-
-def sqrt_btn():
-    try:
-        value = float(calc_display.get())
-        if value > 0:
-            new_val = value ** (1/2)
-            calc_display.set(new_val)
-        else:
-            calc_display.set("ERROR")
-    except ArithmeticError:
-        pass
-
-
-def percent_btn():
-    try:
-        value = float(calc_display.get())
-        new_val = value / 100
-        calc_display.set(new_val)
+            # calc_display.set("UNDEFINED")
+            return "UNDEFINED"
     except ValueError:
-        pass
+        return "ERROR"
+
+
+@value_updater
+def squared_btn(value):
+    try:
+        # value = float(calc_display.get())
+        x = float(value)
+        return x ** 2
+        # new_val = value ** 2
+        # calc_display.set(new_val)
+    except ValueError:
+        return "ERROR"
+
+
+@value_updater
+def sqrt_btn(value):
+    try:
+        # value = float(calc_display.get())
+        x = float(value)
+        if x > 0:
+            return x ** (1/2)
+            # new_val = value ** (1/2)
+            # calc_display.set(new_val)
+        else:
+            return "ERROR"
+            # calc_display.set("ERROR")
+    except ValueError:
+        return "ERROR"
+
+
+@value_updater
+def percent_btn(value):
+    try:
+        # value = float(calc_display.get())
+        x = float(value)
+        return x / 100
+        # new_val = value / 100
+        # calc_display.set(new_val)
+    except ValueError:
+        return "ERROR"
 
 
 def addition(num1, num2):
