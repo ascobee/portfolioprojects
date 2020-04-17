@@ -1,3 +1,7 @@
+# Project: GUI Calculator
+# This calculator can perform addition, subtraction, multiplication, division, and more.
+# Terminal Input: python3 calculator.py
+
 from tkinter import *
 from tkinter import ttk
 
