@@ -1,6 +1,14 @@
-# Project: Password Checker
-# Check to see if your passwords have been exposed in a data breach
-# Terminal Input: python3 passwordchecker.py password1 password2 ...
+"""Secure Password Checker.
+
+Check to see if your passwords have been exposed in a data breach.
+
+Example:
+    Check if two passwords have been exposed.
+
+        $ python passwordchecker.py password1 password2
+
+"""
+
 
 import hashlib
 import sys
@@ -9,19 +17,18 @@ import requests
 
 
 def request_api_data(query_char):
+    """Request API data. Return status code if request unsuccessful."""
     url = 'https://api.pwnedpasswords.com/range/' + query_char
-    api_response = requests.get(url)
-
-    if api_response.status_code != 200:
+    res = requests.get(url, timeout=1)
+    if res.status_code != 200:
         raise RuntimeError(
-            f'Error Fetching: {api_response.status_code}, '
-            'check the api and try again.')
-    return api_response
+            f'Error Fetching: {res.status_code}, check the API and try again.')
+    return res
 
 
 def get_password_leaks_count(hashes, hash_to_check):
+    """Return the password leaks count from API response."""
     hashes = (line.split(':') for line in hashes.text.splitlines())
-
     for h, count in hashes:
         if h == hash_to_check:
             return count
@@ -29,6 +36,7 @@ def get_password_leaks_count(hashes, hash_to_check):
 
 
 def pwned_api_check(password):
+    """Search for password in data set by a partial SHA-1 hash."""
     sha1_password = hashlib.sha1(password.encode('utf-8')).hexdigest().upper()
     first5_char, tail = sha1_password[:5], sha1_password[5:]
     response = request_api_data(first5_char)
@@ -36,9 +44,9 @@ def pwned_api_check(password):
 
 
 def main(args):
+    """Print data breach results for each searched password."""
     for password in args:
         count = pwned_api_check(password)
-
         if count:
             print(
                 f'MATCH FOUND! The password \"{password}\" has been leaked '
