@@ -1,6 +1,14 @@
-# Project: Top Stories - Hacker News
-# Get the top stories (>200 points) on Hacker News
-# Terminal Input: python3 topstories.py
+"""Hacker News: Top Stories.
+
+Get a list of the top stories (>200 points) on Hacker News.
+
+Example:
+    Get the top stories for today.
+
+        $ python topstories.py
+
+"""
+
 
 import pprint
 
@@ -25,23 +33,22 @@ mega_subtext = subtext + subtext2
 
 
 def sort_stories_by_votes(hnlist):
+    """Sort stories by total number of votes."""
     print(f'Today\'s Top {len(hnlist)} Articles:\n')
     return sorted(hnlist, key=lambda k: k['votes'], reverse=True)
 
 
 def create_custom_hn(links, subtext):
+    """Create a list of all stories with 200+ points."""
     hn = []
-
     for idx, _item in enumerate(links):
         title = links[idx].getText()
         href = links[idx].get('href', None)
         vote = subtext[idx].select('.score')
-
         if len(vote):
             points = int(vote[0].getText().replace(' points', ''))
         else:
             points = 0
-
         if points > 199:
             hn.append({'title': title, 'link': href, 'votes': points})
     return sort_stories_by_votes(hn)
